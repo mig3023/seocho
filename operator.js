@@ -224,3 +224,55 @@ const WEEK_NAMES = "일월화수목금토";
 for (const w of WEEK_NAMES) {
   console.log("🚀  w:", w);
 }
+
+let total = 0;
+function add(x, y) {
+  total = x + y;
+}
+
+const 국어 = 80;
+const 수학 = 70;
+// const total = add(국어, 수학);
+add(국어, 수학);
+console.log("🚀 ~ total:", total);
+
+function checkscore() {
+  if (국어 > 70) {
+    return "합격";
+  } else if (수학 > 70) {
+    return "통과";
+  } else {
+    return "불합격";
+  }
+}
+
+function checkscore() {
+  if (국어 > 70) {
+    return "합격";
+  }
+  if (수학 > 70) {
+    return "통과";
+  }
+  return "불합격";
+}
+
+console.log(checkscore());
+
+console.log("++++++++++++++++++++");
+const dt = new Date();
+console.log("🚀 ~ dt:", dt, dt.getDay());
+
+const obj = {
+  id: 1,
+  fn: function () {
+    console.log(arguments);
+  },
+};
+
+const { fn } = obj;
+fn(1, 2, 3);
+
+const {
+  fn: { name: nm },
+} = obj;
+console.log("🚀 ~ name:", nm);
