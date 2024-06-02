@@ -1,12 +1,10 @@
-//p. 50 for문을 이용하여 다음과 같이 정확한 숫자를 출력하는 코드를 작성하시오.
-//for (let i = 0.1; i < 1; i = i + 0.1); console.log(i);
+//p.50
 // 내 답
 for (let i = 0.1; i < 1; i = i + 0.1) console.log(Number(i.toFixed(1)));
 //강사님 답
 for (let i = 0.1; i < 1; i = i + 0.1) console.log(+i.toFixed(1)); //number 대신 + 써도됨. 숫자로 인식함
 
-//1~10 사이의 정수에 대해 제곱근을 소숫점 3자리까지 출력하시오.
-//Math.sqrt() 사용, 무리수만 출력!
+//p.51
 //내 답(무리수만 출력 못함)
 for (let i = 1; i <= 10; i = i + 1)
   console.log(i, Number(Math.sqrt(i).toFixed(3)));
@@ -20,9 +18,7 @@ function p51() {
 }
 p51();
 
-// 오늘 날짜의 요일을 출력하는 switch문을 사용해서 작성해 보고,
-// switch문을 사용하지 않은 더 간단한 방법도 찾아보세요.
-
+// p.52
 // 1. switch문 사용
 //내 답
 const WEEK_NAMES = "일월화수목금토";
@@ -92,7 +88,10 @@ function p52() {
 }
 // p52();
 
-// 다음과 같이 올바른 더하기 연산을 하는 addPoints 함수를 작성하시오. (단, 소수점 자리수는 더 긴쪽에 맞춘다.)
+// p.53
+function addPoints(a, b) {}
+console.log(0.21354 + 0.1);
+
 // 내 답 (실패)
 function addPoints(a, b) {
   return a + b;

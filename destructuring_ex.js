@@ -1,4 +1,4 @@
-//user 객체를 받아서 id와 name을 출력하는 함수를 3개의 함수로 작성하시오.
+//p. 65
 //강사님 답
 function f0(user) {
   console.log(user.id, user.name);
@@ -21,7 +21,7 @@ f1(user);
 f1(hong);
 f1(lee);
 
-//다음 user객체에서 passwd를 제외한 데이터를 userInfo라는 변수에 할당하시오.
+//p. 66
 // 내 답
 const { passwd, ...userInfo } = user;
 console.log(userInfo);
@@ -32,7 +32,7 @@ function p66(user) {
 }
 p66(user);
 
-//다음 arr에서 3개의 id를 id1, id2, id3로 할당하시오.
+//p. 67
 //내 답
 const arr = [[{ id: 1 }], [{ id: 2 }, { id: 3 }]];
 const [[{ id: id1 }], [{ id: id2 }, { id: id3 }]] = arr;
