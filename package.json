@@ -1,5 +1,5 @@
 {
-  "name": "seochojadejs",
+  "name": "seochosy",
   "version": "1.0.0",
   "description": "js study",
   "main": "index.js",
@@ -10,7 +10,7 @@
   "keywords": [
     "js"
   ],
-  "author": "seoy",
+  "author": "sy",
   "license": "ISC",
   "dependencies": {
     "moment": "^2.30.1"
