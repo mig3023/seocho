@@ -23,4 +23,4 @@ console.log("🚀 ~ m:", m.fromNow());
 const writtenDate = moment("2024-04-30");
 console.log("🚀 ~ writtenDate:", writtenDate.fromNow());
 
-const nabi = new cat("nabi");
+const nabi = new Cat("nabi");
