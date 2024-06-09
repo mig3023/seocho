@@ -42,9 +42,10 @@ const ex8_2 = arr2.slice(3, 5);
 console.log([...ex8_1, ..."xyz", ...ex8_2]);
 
 console.log("-------------------------");
-// p.147 다음과 같은 push, pop, shift, unshift를 순수함수로 작성하시오. (pop, shift 실패)
-const assert = require("assert");
-const { clearScreenDown } = require("readline");
+// p.147 다음과 같은 push, pop, shift, unshift를 순수함수로 작성하시오. (shift 보류)
+// const assert = require("assert");
+import * as assert from "assert"; //ES6 문법으로 변경
+// const { clearScreenDown } = require("readline");
 const arr = [1, 2, 3, 4];
 
 function push(arr, ...args) {
@@ -53,11 +54,17 @@ function push(arr, ...args) {
 console.log(push(arr, 5, 6));
 assert.deepStrictEqual(push(arr, 5, 6), [1, 2, 3, 4, 5, 6]);
 
-function pop(arr, x) {
+function pop(arr) {
+  return [...arr].pop();
+}
+console.log(pop(arr));
+assert.deepStrictEqual(pop(arr), 4);
+
+function pop2(arr, x) {
   return [...arr].splice(x);
 }
-console.log(pop(arr, 2));
-assert.deepStrictEqual(pop(arr, 2), [3, 4]);
+console.log(pop2(arr, 2));
+assert.deepStrictEqual(pop2(arr, 2), [3, 4]);
 
 function unshift(arr, ...args) {
   return [...args, ...arr];
@@ -65,27 +72,28 @@ function unshift(arr, ...args) {
 console.log(unshift(arr, 0));
 assert.deepStrictEqual(unshift(arr, 0), [0, 1, 2, 3, 4]);
 
-function unshift(arr, ...args) {
+function unshift2(arr, ...args) {
   return [...args, ...arr];
 }
-console.log(unshift(arr, 7, 8));
-assert.deepStrictEqual(unshift(arr, 7, 8), [7, 8, 1, 2, 3, 4]);
+console.log(unshift2(arr, 7, 8));
+assert.deepStrictEqual(unshift2(arr, 7, 8), [7, 8, 1, 2, 3, 4]);
 
 console.log("-------------------------");
 // p.148 다음과 같은 deleteArray와 deleteObjectArray를 순수함수로 작성하시오.(실패)
 let arr3 = [1, 2, 3, 4];
 
-function deleteArray(arr3, x) {
-  return [...arr3].splice(x);
+function deleteArray(arr3, ...args) {
+  return [...arr3].splice(...args);
 }
-console.log(deleteArray(arr3, 2));
+console.log(">>>>>>>", deleteArray(arr3, 2));
+console.log(arr3);
 // assert.deepStrictEqual(deleteArray(arr3, 2), [1, 2]);
 
-function deleteArray(arr3, x, y) {
+function deleteArray2(arr3, x, y) {
   return [...arr3].slice(x, y);
 }
-console.log(deleteArray(arr3, 1, 3));
-// assert.deepStrictEqual(deleteArray(arr3, 1, 3), [1, 4]);
+console.log(deleteArray2(arr3, 1, 3));
+// assert.deepStrictEqual(deleteArray2(arr3, 1, 3), [1, 4]);
 
 assert.deepStrictEqual(arr3, [1, 2, 3, 4]);
 
