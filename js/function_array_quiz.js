@@ -44,7 +44,7 @@ console.log([...ex8_1, ..."xyz", ...ex8_2]);
 console.log("-------------------------");
 // p.147 다음과 같은 push, pop, shift, unshift를 순수함수로 작성하시오. (shift 보류)
 // const assert = require("assert");
-import * as assert from "assert"; //ES6 문법으로 변경
+import assert from "assert"; //ES6 문법으로 변경
 // const { clearScreenDown } = require("readline");
 const arr = [1, 2, 3, 4];
 
