@@ -5,6 +5,7 @@ import Profile from "./Profile";
 import Button from "./atoms/Button";
 import SampleAtoms from "./atoms/SampleAtoms";
 import ItemEdit from "./ItemEdit";
+// import ItemEdit, { MemoedItemEdit } from "./ItemEdit";
 
 export default function My({
   session: { loginUser, cart },
@@ -65,7 +66,12 @@ export default function My({
     // console.debug("useLayoutEffect!!!!!!");
   }, []);
 
-  const addingItem = useMemo(() => ({ name: "", price: 1000 }), []);
+  const addingItem = useMemo(() => ({ name: "x", price: 1000 }), []);
+
+  const totalPrice = useMemo(() => {
+    // console.log("ttttttttttttttt");
+    return cart?.reduce((acc, item) => acc + item.price, 0);
+  }, [cart]);
 
   return (
     <>
@@ -121,8 +127,11 @@ export default function My({
               ))
             : "장바구니가 비었습니다."}
         </ul>
+        <h3 className="pl-1 text-left text-green-500">
+          * Total: {totalPrice.toLocaleString()}원
+        </h3>
         {isAdding ? (
-          <ItemEdit cancel={cancelAdding} save={addItem} item={addingItem} />
+          <ItemEdit item={addingItem} cancel={cancelAdding} save={addItem} />
         ) : (
           <Button
             onClick={() => setIsAdding(true)}
@@ -131,6 +140,8 @@ export default function My({
           />
         )}
       </div>
+
+      {/* <MemoedItemEdit /> */}
 
       <SampleAtoms />
     </>
