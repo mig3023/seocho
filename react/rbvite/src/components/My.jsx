@@ -4,7 +4,7 @@ import Login from "./Login";
 import Profile from "./Profile";
 import Button from "./atoms/Button";
 import SampleAtoms from "./atoms/SampleAtoms";
-import ItemEdit from "./ItemEdit";
+import ItemEdit, { MemoedItemEdit } from "./ItemEdit";
 // import ItemEdit, { MemoedItemEdit } from "./ItemEdit";
 
 export default function My({
@@ -20,14 +20,6 @@ export default function My({
 
   const cancelAdding = () => {
     setIsAdding(false);
-  };
-
-  const editing = (itemId) => {
-    setEditingItem(cart.find((item) => item.id === itemId));
-  };
-
-  const cancelEditing = () => {
-    setEditingItem(null);
   };
 
   // test useEffect
@@ -66,12 +58,28 @@ export default function My({
     // console.debug("useLayoutEffect!!!!!!");
   }, []);
 
-  const addingItem = useMemo(() => ({ name: "x", price: 1000 }), []);
+  const addingItem = useMemo(() => ({ name: "", price: 1000 }), []);
 
+  const editing = (itemId) => {
+    const item = cart.find((item) => item.id === itemId);
+    setEditingItem(item);
+    setPrePrice(item.price);
+  };
+  const cancelEditing = () => {
+    setEditingItem(null);
+    setPrePrice(0);
+  };
+  const editItem = (item) => {
+    saveItem(item);
+    if (prePrice !== item.price) setTotalPriceToggleFlag(!totalPriceToggleFlag);
+  };
+
+  const [totalPriceToggleFlag, setTotalPriceToggleFlag] = useState(false);
+  const [prePrice, setPrePrice] = useState(0);
   const totalPrice = useMemo(() => {
-    // console.log("ttttttttttttttt");
+    console.log("tttotalPrice>>", totalPriceToggleFlag);
     return cart?.reduce((acc, item) => acc + item.price, 0);
-  }, [cart]);
+  }, [cart, totalPriceToggleFlag]);
 
   return (
     <>
@@ -81,7 +89,13 @@ export default function My({
         <Login singIn={signIn} />
       )}
 
-      <h1>Second: {time}</h1>
+      <h1>
+        Second: {time} - {prePrice}
+      </h1>
+      <Button
+        text="TotalPrice"
+        onClick={() => setTotalPriceToggleFlag(!totalPriceToggleFlag)}
+      />
 
       <div className="my-5 border text-center">
         <ul>
@@ -92,7 +106,7 @@ export default function My({
                     <ItemEdit
                       item={editingItem}
                       cancel={cancelEditing}
-                      save={saveItem}
+                      save={editItem}
                     />
                   ) : (
                     <>
@@ -131,7 +145,11 @@ export default function My({
           * Total: {totalPrice.toLocaleString()}원
         </h3>
         {isAdding ? (
-          <ItemEdit item={addingItem} cancel={cancelAdding} save={addItem} />
+          <MemoedItemEdit
+            item={addingItem}
+            cancel={cancelAdding}
+            save={addItem}
+          />
         ) : (
           <Button
             onClick={() => setIsAdding(true)}
@@ -140,8 +158,6 @@ export default function My({
           />
         )}
       </div>
-
-      {/* <MemoedItemEdit /> */}
 
       <SampleAtoms />
     </>
