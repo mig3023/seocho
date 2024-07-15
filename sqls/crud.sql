@@ -45,7 +45,7 @@ select b.id 'bookID', b.title, u.nickname as 'owner', b.clickdel
 select u.id as UserID, u.nickname, b.title, b.id as BookID
   from User u left outer join Book b on u.id = b.owner;
   
--- ex) hong의 Study와 king의 Enter 북에 마크를 하나씩 추가해 보세요.
+-- ex) hong의 Study(1)와 king의 Enter(6) 북에 마크를 하나씩 추가해 보세요.
 select * from Book;
 select * from Mark;
 desc Mark;
@@ -56,9 +56,22 @@ insert into Mark(book, url, title)
  (6, 'https://youtube.com', 'Youtube');
 
 -- 읽기(join)
-select *
-  from Book b inner join Mark m on b.id = m.book;
-
+select * from Book b inner join Mark m on b.id = m.book;
+  
 select b.id bookid, u.nickname 'owner', m.book, m.url, m.title
   from Book b inner join Mark m on b.id = m.book
               inner join User u on b.owner = u.id;
+              
+select * from Mark;
+-- update Mark set title='유튜브' where title='Youtube'; -- BAD
+update Mark set title='유튜브' where id = 3; -- GOOD
+
+select b.title, m.title, concat(b.title, '-', m.title)
+  from Book b inner join Mark m on b.id = m.book;
+
+-- join & update
+update Book b inner join Mark m on b.id = m.book
+   set m.title= concat(b.title, '-', m.title)
+ where m.id > 0;
+
+select * from Book b inner join Mark m on b.id = m.book;
