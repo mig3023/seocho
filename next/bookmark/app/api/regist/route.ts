@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 
     await createMark({
       book,
-      url: 'https://seocho.topician.com',
+      url: 'https://seoyyy.topician.com',
       title: 'BookMark',
       descript: '나만의 북마크',
       image:
