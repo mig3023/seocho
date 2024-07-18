@@ -1,43 +1,80 @@
 'use client';
 
-import { useContext, createContext, useCallback, useReducer } from 'react';
+import { Book, DefaultUser, User } from '@/types';
+import {
+  useContext,
+  createContext,
+  useCallback,
+  useReducer,
+  ReactNode,
+  useEffect,
+} from 'react';
+import { auth } from './auth';
 
-const SessionContext = createContext({});
+type Session = {
+  loginUser: User | null;
+  books: Book[];
+};
 
-const reducer = (session, action) => {
-  const {
-    type,
-    payload: { id, name, price },
-  } = action;
-  console.log('🚀  payload:', id, name, price);
+const DefaultSession: Session = {
+  loginUser: DefaultUser,
+  books: [],
+};
+
+type Action =
+  | { type: 'login'; payload: User }
+  | { type: 'logout'; payload: {} }
+  | { type: 'addBook'; payload: Book }
+  | { type: 'saveBook'; payload: Book }
+  | { type: 'removeBook'; payload: { id: number } };
+
+// for provider's value
+interface ContextProps {
+  session: Session;
+  login: (user: User) => void;
+  logout: () => void;
+  addBook: (book: Book) => number;
+  saveBook: (book: Book) => void;
+  removeBook: (id: number) => void;
+}
+
+const SessionContext = createContext<ContextProps>({
+  session: { loginUser: DefaultUser, books: [] },
+  login: (user: User) => {},
+  logout: () => {},
+  addBook: (book: Book) => 0,
+  saveBook: (book: Book) => {},
+  removeBook: (id: number) => {},
+});
+
+const reducer = (session: Session, action: Action) => {
+  const { type, payload } = action;
 
   switch (type) {
     case 'logout':
       return { ...session, loginUser: null };
 
     case 'login':
-      return { ...session, loginUser: { id: 1, age: 33, name } };
+      return { ...session, loginUser: { ...payload } };
 
-    case 'removeItem':
+    case 'removeBook':
       return {
         ...session,
-        cart: [...session.cart.filter((item) => item.id !== id)],
+        cart: [...session.books.filter((book) => book.id !== payload?.id)],
       };
 
-    case 'addItem':
-      console.table({ id, name, price });
-      // session.cart.push({ id, name, price }); // 2번 push!!
-      // return { ...session };
-
+    case 'addBook':
+      console.table(payload);
       // 완전히 추가되기 전의 session.cart가 spread되므로 1번만 추가된 것 처럼 보임!
-      return { ...session, cart: [...session.cart, { id, name, price }] };
+      return { ...session, books: [...session.books, { ...payload }] };
 
-    case 'saveItem':
+    case 'saveBook':
+      console.table(payload);
       return {
         ...session,
-        cart: session.cart.map((_item) => {
-          if (_item.id !== id) return _item;
-          return { id, name, price };
+        books: session.books.map((book) => {
+          if (book.id !== payload.id) return book;
+          return { ...payload };
         }),
       };
 
@@ -46,43 +83,48 @@ const reducer = (session, action) => {
   }
 };
 
-const SessionProvider = ({ children }) => {
-  const [session, dispatch] = useReducer(reducer, SampleSession);
+const SessionProvider = ({ children }: { children: ReactNode }) => {
+  const [session, dispatch] = useReducer(reducer, DefaultSession);
 
   const logout = useCallback(
     () => dispatch({ type: 'logout', payload: {} }),
     []
   );
 
-  const login = useCallback((name) => {
-    dispatch({ type: 'login', payload: { name } });
+  const login = useCallback((user: User) => {
+    dispatch({ type: 'login', payload: user });
   }, []);
 
-  const removeItem = useCallback((id) => {
-    dispatch({ type: 'removeItem', payload: { id } });
+  const removeBook = useCallback((id: number) => {
+    dispatch({ type: 'removeBook', payload: { id } });
   }, []);
 
-  const addItem = useCallback(
-    ({ name, price }) => {
-      const maxId = Math.max(...session.cart.map((_item) => _item.id)) ?? 0;
-      const id = maxId + 1;
-      // session.cart.push({
-      //   id: maxId + 1,
-      //   name,
-      //   price,
-      // });
-      dispatch({ type: 'addItem', payload: { id, name, price } });
-    },
-    [session]
-  );
+  const addBook = useCallback((book: Book) => {
+    dispatch({ type: 'addBook', payload: book });
+    return 0;
+  }, []);
 
-  const saveItem = useCallback((item) => {
-    dispatch({ type: 'saveItem', payload: item });
+  const saveBook = useCallback((book: Book) => {
+    dispatch({ type: 'saveBook', payload: book });
+  }, []);
+
+  useEffect(() => {
+    // (async function () {
+    //   const authSession = await auth();
+    //   console.log('🚀 SessionContext - authSession:', authSession, new Date());
+    // })();
   }, []);
 
   return (
     <SessionContext.Provider
-      value={{ session, login, logout, removeItem, saveItem, addItem }}
+      value={{
+        session,
+        login,
+        logout,
+        removeBook,
+        saveBook,
+        addBook,
+      }}
     >
       {children}
     </SessionContext.Provider>
@@ -91,5 +133,4 @@ const SessionProvider = ({ children }) => {
 
 const useSession = () => useContext(SessionContext);
 
-// eslint-disable-next-line react-refresh/only-export-components
 export { SessionProvider, useSession };
