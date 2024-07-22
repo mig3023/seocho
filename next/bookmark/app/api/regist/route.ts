@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
     const book = await createBook(`${nickname} BookMark`, newer);
 
     await createMark({
+      id: 0,
       book,
       url: 'https://seoyyy.topician.com',
       title: 'BookMark',
